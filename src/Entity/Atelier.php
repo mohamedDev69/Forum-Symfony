@@ -43,6 +43,9 @@ class Atelier
     #[ORM\ManyToOne(inversedBy: 'ateliers')]
     private ?Intervenant $intervenant = null;
 
+    #[ORM\Column(length: 20)]
+    private ?string $heure = null;
+
     public function __construct()
     {
         $this->inscriptions = new ArrayCollection();
@@ -175,6 +178,18 @@ class Atelier
     public function setIntervenant(?Intervenant $intervenant): static
     {
         $this->intervenant = $intervenant;
+
+        return $this;
+    }
+
+    public function getHeure(): ?string
+    {
+        return $this->heure;
+    }
+
+    public function setHeure(string $heure): static
+    {
+        $this->heure = $heure;
 
         return $this;
     }

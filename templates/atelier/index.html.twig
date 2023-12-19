@@ -13,6 +13,7 @@
                 <th>Duration</th>
                 <th>Description</th>
                 <th>Date_atelier</th>
+                <th>Heure</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -24,6 +25,7 @@
                 <td>{{ atelier.duration }}</td>
                 <td>{{ atelier.description }}</td>
                 <td>{{ atelier.dateAtelier ? atelier.dateAtelier|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ atelier.heure ? atelier.heure : '' }}</td>
                 <td>
                     <a href="{{ path('app_atelier_show', {'id': atelier.id}) }}">show</a>
                     <a href="{{ path('app_atelier_edit', {'id': atelier.id}) }}">edit</a>
