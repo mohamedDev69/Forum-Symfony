@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Forum;
+use App\Entity\Sponsor;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,7 +16,6 @@ class ForumType extends AbstractType
         $builder
             ->add('year')
             ->add('theme')
-            ->add('sponsors')
         ;
     }
 

@@ -16,11 +16,7 @@ class SponsorType extends AbstractType
         $builder
             ->add('name')
             ->add('contact_info')
-            ->add('forum', EntityType::class, [
-                'class' => Forum::class,
-                'choice_label' => 'theme', // Assuming Forum entity has a 'name' field
-                'label' => 'Forum : '
-            ])
+
         ;
     }
 
