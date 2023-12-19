@@ -31,6 +31,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Eleve::class)]
     private Collection $eleves;
 
+
     public function __construct()
     {
         $this->ecoles = new ArrayCollection();
@@ -43,7 +44,13 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        if(!$this->getEleves()->isEmpty()){
+            return ['ROLE_USER'];
+        }
+        if(!$this->getEcoles()->isEmpty()){
+            return ['ROLE_ECOLE'];
+        }
+        return ['ROLE_ADMIN'];
     }
 
     public function eraseCredentials()

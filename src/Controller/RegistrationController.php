@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Ecole;
+use App\Entity\Eleve;
 use App\Entity\Utilisateur;
 use App\Form\RegistrationFormType;
 use App\Security\UsersAuthenticator;
@@ -12,7 +14,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegistrationController extends AbstractController
 {
@@ -31,12 +32,39 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-
+        
             $entityManager->persist($user);
             $entityManager->flush();
-            // do anything else you need here, like send an email
-            // creer un eleve
-
+        
+            $formData = $request->request->all()['registration_form'];
+            $adress = $formData['adress'];
+            $userType = $formData['userType'];
+            $name = $formData['name'];
+            $mail = $formData['email'];
+        
+            if ($userType == "etudiant") {
+                $uniqueInfo = $formData['unique_info'];
+                $schoolInfo = $formData['school_info'];
+                $ecole = $formData['ecole'];
+                $etudiant = new Eleve();
+                $etudiant->setName($name);
+                $etudiant->setUser($user);
+                $etudiant->setSchoolInfo($schoolInfo);
+                $etudiant->setUniqueInfo($uniqueInfo);
+                $school = $entityManager->getRepository(Ecole::class)->find($ecole);
+                $etudiant->setEcole($school);
+                $entityManager->persist($etudiant);
+                $entityManager->flush();
+            } else if($userType == "ecole"){
+                $etablissement = new Ecole();
+                $etablissement->setName($name);
+                $etablissement->setAdress($adress);
+                $etablissement->setUser($user);
+                $etablissement->setMail($mail);
+                $entityManager->persist($etablissement);
+                $entityManager->flush();
+            }
+        
             return $userAuthenticator->authenticateUser(
                 $user,
                 $authenticator,
@@ -44,8 +72,8 @@ class RegistrationController extends AbstractController
             );
         }
 
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
+            return $this->render('registration/register.html.twig', [
+                'registrationForm' => $form->createView(),
+            ]);
     }
 }
