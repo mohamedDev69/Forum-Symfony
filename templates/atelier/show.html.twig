@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Atelier{% endblock %}
+
+{% block body %}
+    <h1>Atelier</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ atelier.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ atelier.title }}</td>
+            </tr>
+            <tr>
+                <th>Duration</th>
+                <td>{{ atelier.duration }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ atelier.description }}</td>
+            </tr>
+            <tr>
+                <th>Date_atelier</th>
+                <td>{{ atelier.dateAtelier ? atelier.dateAtelier|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_atelier_index') }}">back to list</a>
+
+    <a href="{{ path('app_atelier_edit', {'id': atelier.id}) }}">edit</a>
+
+    {{ include('atelier/_delete_form.html.twig') }}
+{% endblock %}
