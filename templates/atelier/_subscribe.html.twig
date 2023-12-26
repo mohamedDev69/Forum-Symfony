@@ -1,0 +1,11 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Subscribe Atelier{% endblock %}
+
+{% block body %}
+    <h1>Subscribe Atelier</h1>
+
+    {{ include('atelier/_form.html.twig', {'button_label': 'Subscribe'}) }}
+
+    <a href="{{ path('app_atelier_index') }}">back to list</a>
+{% endblock %}

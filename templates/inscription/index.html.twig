@@ -1,0 +1,36 @@
+{# {% extends 'base.html.twig' %}
+
+{% block title %}Hello InscriptionController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code><a href="{{ 'C:/Users/dadamicro/Desktop/Etude/M1/Symfony/Projet symfony/Forum-Symfony/src/Controller/InscriptionController.php'|file_link(0) }}">src/Controller/InscriptionController.php</a></code></li>
+        <li>Your template at <code><a href="{{ 'C:/Users/dadamicro/Desktop/Etude/M1/Symfony/Projet symfony/Forum-Symfony/templates/inscription/index.html.twig'|file_link(0) }}">templates/inscription/index.html.twig</a></code></li>
+    </ul>
+</div>
+{% endblock %} #}
+
+{# templates/inscription/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    <h1>Inscription</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+    <button type="submit">S'inscrire</button>
+    {{ form_end(form) }}
+{% endblock %}

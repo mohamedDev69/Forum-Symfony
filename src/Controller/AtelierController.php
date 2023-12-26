@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\Inscription;
 use App\Entity\Atelier;
 use App\Form\AtelierType;
 use App\Repository\AtelierRepository;
@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/atelier')]
+
 class AtelierController extends AbstractController
 {
     #[Route('/', name: 'app_atelier_index', methods: ['GET'])]
@@ -42,7 +43,7 @@ class AtelierController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_atelier_show', methods: ['GET'])]
+    #[Route('/show/{id}', name: 'app_atelier_show', methods: ['GET'])]
     public function show(Atelier $atelier): Response
     {
         return $this->render('atelier/show.html.twig', [
@@ -78,5 +79,32 @@ class AtelierController extends AbstractController
         }
 
         return $this->redirectToRoute('app_atelier_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/inscription/{id}', name: 'app_inscription', methods: ['POST'])]
+    public function inscription(AtelierRepository $atelierRepository, Atelier $atelier, EntityManagerInterface $entityManager): Response
+    {
+               
+               $eleve = $this->getUser(); 
+               $inscription = new Inscription();
+               $inscription->setAtelier($atelier);
+               $inscription->setEleve($eleve);
+               $inscription->setDateInscription(new \DateTime());
+       
+              
+               $entityManager->persist($inscription);
+               $entityManager->flush();
+       
+               
+               $this->addFlash('success', 'Inscription réussie !');
+       
+               return $this->redirectToRoute('app_atelier_index');
+    }
+    #[Route('/inscription', name: 'app_atelier_inscription', methods: ['GET'])]
+    public function atelierInscription(AtelierRepository $atelierRepository): Response
+    {
+        return $this->render('atelier/list_atelier.html.twig', [
+            'ateliers' => $atelierRepository->findAll(),
+        ]);
     }
 }
