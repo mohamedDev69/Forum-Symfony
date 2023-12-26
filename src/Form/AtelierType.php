@@ -9,6 +9,7 @@ use App\Entity\Salle;
 use App\Entity\Secteur;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -21,6 +22,15 @@ class AtelierType extends AbstractType
             ->add('duration')
             ->add('description')
             ->add('date_atelier')
+            ->add('heure', ChoiceType::class, [
+                'choices' => [
+                    '9h30' => '9 H 30',
+                    '10h30' => '10 H 30',
+                    '11h30' => '11 H 30',
+                ],
+                'multiple' => false, // Permet de sélectionner plusieurs options
+                'expanded' => false, // false pour une liste déroulante, true pour des cases à cocher
+            ])
             ->add('forum', EntityType::class, [
                 'class' => Forum::class,
                 'choice_label' => 'theme', // Assuming Forum entity has a 'name' field
