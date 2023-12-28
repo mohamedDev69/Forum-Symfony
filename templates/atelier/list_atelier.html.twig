@@ -1,0 +1,42 @@
+{# templates/atelier/list_ateliers.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Ateliers{% endblock %}
+
+{% block body %}
+    <h1>Liste des Ateliers</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Duration</th>
+                <th>Description</th>
+                <th>Date_atelier</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for atelier in ateliers %}
+            <tr>
+                <td>{{ atelier.id }}</td>
+                <td>{{ atelier.title }}</td>
+                <td>{{ atelier.duration }}</td>
+                <td>{{ atelier.description }}</td>
+                <td>{{ atelier.dateAtelier ? atelier.dateAtelier|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <form method="post" action="{{ path('app_inscription', {'id': atelier.id}) }}">
+                        <button type="submit">S'inscrire</button>
+                    </form>
+ 
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Aucun atelier trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
