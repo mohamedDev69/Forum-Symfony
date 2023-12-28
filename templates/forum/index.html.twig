@@ -11,6 +11,7 @@
                 <th>Id</th>
                 <th>Year</th>
                 <th>Theme</th>
+                <th>Sponsor</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,6 +21,11 @@
                 <td>{{ forum.id }}</td>
                 <td>{{ forum.year }}</td>
                 <td>{{ forum.theme }}</td>
+                <td>
+                {% for sponsor in forum.sponsors %}
+                    {{ sponsor.name }} <br>
+                {% endfor %}
+                </td>
                 <td>
                     <a href="{{ path('app_forum_show', {'id': forum.id}) }}">show</a>
                     <a href="{{ path('app_forum_edit', {'id': forum.id}) }}">edit</a>

@@ -16,6 +16,12 @@ class ForumType extends AbstractType
         $builder
             ->add('year')
             ->add('theme')
+            ->add('sponsors', EntityType::class, [
+                'class' => Sponsor::class,
+                'choice_label' => 'name', // Utilisez la propriété de l'entité Sponsor que vous souhaitez afficher
+                'expanded' => false,
+                'multiple' => true
+            ])
         ;
     }
 

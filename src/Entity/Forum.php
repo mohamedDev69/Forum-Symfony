@@ -24,7 +24,7 @@ class Forum
     #[ORM\OneToMany(mappedBy: 'forum', targetEntity: Atelier::class)]
     private Collection $ateliers;
 
-    #[ORM\ManyToMany(targetEntity: Sponsor::class, mappedBy: 'forum')]
+    #[ORM\ManyToMany(targetEntity: Sponsor::class, inversedBy: 'forums' )]
     private Collection $sponsors;
 
     public function __construct()

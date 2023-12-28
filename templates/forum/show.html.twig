@@ -19,6 +19,14 @@
                 <th>Theme</th>
                 <td>{{ forum.theme }}</td>
             </tr>
+            <tr>
+                <th>Sponsor</th>
+                <td>
+                {% for sponsor in forum.sponsors %}
+                    {{ sponsor.name }} <br>
+                {% endfor %}
+                </td>
+            </tr>
         </tbody>
     </table>
 

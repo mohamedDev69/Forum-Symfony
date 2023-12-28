@@ -16,7 +16,6 @@ class SponsorType extends AbstractType
         $builder
             ->add('name')
             ->add('contact_info')
-
         ;
     }
 

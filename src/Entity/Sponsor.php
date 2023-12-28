@@ -21,7 +21,7 @@ class Sponsor
     #[ORM\Column(length: 40)]
     private ?string $contact_info = null;
 
-    #[ORM\ManyToMany(targetEntity: Forum::class, inversedBy: 'sponsors')]
+    #[ORM\ManyToMany(targetEntity: Forum::class, mappedBy: 'sponsors')]
     private Collection $forum;
 
     public function __construct()
