@@ -30,6 +30,9 @@ class Eleve
     #[ORM\ManyToOne(inversedBy: 'eleves')]
     private ?Ecole $ecole = null;
 
+    #[ORM\ManyToOne(inversedBy: 'eleves')]
+    private ?Utilisateur $user = null;
+
     public function __construct()
     {
         $this->inscriptions = new ArrayCollection();
@@ -114,6 +117,18 @@ class Eleve
     public function setEcole(?Ecole $ecole): static
     {
         $this->ecole = $ecole;
+
+        return $this;
+    }
+
+    public function getUser(): ?Utilisateur
+    {
+        return $this->user;
+    }
+
+    public function setUser(?Utilisateur $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

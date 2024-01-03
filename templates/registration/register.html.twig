@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    <h1>Inscription</h1>
+
+    {{ form_errors(registrationForm) }}
+
+    {{ form_start(registrationForm) }}
+        <label for="{{ registrationForm.userType.vars.id }}">Type d'utilisateur:</label>
+        {{ form_widget(registrationForm.userType, { 'id': 'checkBox_useType' }) }}
+        <br>
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.plainPassword) }}
+
+        {{ form_row(registrationForm.name) }}
+
+        <!-- Champs spécifiques pour les utilisateurs individuels -->
+        <div id="individualFields">
+            {{ form_row(registrationForm.unique_info) }}
+            {{ form_row(registrationForm.school_info) }}
+            {{ form_row(registrationForm.ecole) }}
+        </div>
+
+        <!-- Champs spécifiques pour les organisations -->
+        <div id="organizationFields">
+            {{ form_row(registrationForm.adress) }}
+        </div>
+
+        {{ form_row(registrationForm.agreeTerms) }}
+
+        <button type="submit" class="btn">Inscription</button>
+    {{ form_end(registrationForm) }}
+</body>
+{% block javascripts %}
+
+    <script>
+        $(document).ready(function() {
+            // Cachez initialement les champs supplémentaires
+            $("#individualFields, #organizationFields").hide();
+        
+            // Réagissez aux changements dans le champ "Type d'utilisateur"
+            $("#registration_form_userType_0,#registration_form_userType_1").change(function() {
+                var userType = $(this).val();
+        
+                // Cachez tous les champs supplémentaires
+                $("#individualFields, #organizationFields").hide();
+        
+                // Affichez les champs appropriés en fonction du type d'utilisateur sélectionné
+                if (userType === "etudiant") {
+                    $("#individualFields").show();
+                } else if (userType === "ecole") {
+                    $("#organizationFields").show();
+                }
+            });
+        });
+    </script>
+    {% endblock %}
+{% endblock %}

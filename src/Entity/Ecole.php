@@ -27,6 +27,9 @@ class Ecole
     #[ORM\OneToMany(mappedBy: 'ecole', targetEntity: Eleve::class)]
     private Collection $eleves;
 
+    #[ORM\ManyToOne(inversedBy: 'ecoles')]
+    private ?Utilisateur $user = null;
+
     public function __construct()
     {
         $this->eleves = new ArrayCollection();
@@ -99,6 +102,18 @@ class Ecole
                 $elefe->setEcole(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?Utilisateur
+    {
+        return $this->user;
+    }
+
+    public function setUser(?Utilisateur $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
