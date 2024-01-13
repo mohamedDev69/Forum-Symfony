@@ -45,4 +45,19 @@ class InscriptionRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function getNombreInscritsParAtelierEtCreneau($atelierId, $creneauId)
+    {
+        $qb = $this->createQueryBuilder('i');
+
+        return $qb->select('COUNT(i.id)')
+            ->join('i.atelier', 'a')
+            ->where('a.id = :atelierId')
+            ->andWhere('c.id = :creneauId')
+            ->setParameter('atelierId', $atelierId)
+            ->setParameter('creneauId', $creneauId)
+            ->getQuery()
+            ->getSingleScalarResult(); // Use getSingleScalarResult to get a single value
+    }
+
 }
