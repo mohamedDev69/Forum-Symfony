@@ -1,12 +1,17 @@
 
 <nav>
     <ul>
-        <li><a href="{{ path('app_atelier_index') }}">Gestion Atelier</a></li>
-        <li><a href="{{ path('app_forum_index') }}">Gestion Forum</a></li>
-        <li><a href="{{ path('app_secteur_index') }}">Gestion Secteur</a></li>
-        <li><a href="{{ path('app_salle_index') }}">Gestion Salle</a></li>
-        <li><a href="{{ path('app_intervenant_index') }}">Gestion Intervenant</a></li>
-        <li><a href="{{ path('app_sponsor_index') }}">Gestion Sponsor</a></li>
+        
+        <li><a href="{{ path('app_atelier_index') }}">Ateliers</a></li>
+        {% if is_granted('ROLE_ADMIN')%}
+            <li><a href="{{ path('app_forum_index') }}">Forums</a></li>
+            <li><a href="{{ path('app_secteur_index') }}">Secteurs</a></li>
+            <li><a href="{{ path('app_sponsor_index') }}">Sponsors</a></li>
+        {% endif %}
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_ECOLE')%}
+            <li><a href="{{ path('app_salle_index') }}">Salles</a></li>
+            <li><a href="{{ path('app_intervenant_index') }}">Intervenants</a></li>
+        {% endif %}
         <li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
 
     </ul>

@@ -10,8 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/intervenant')]
+#[Security("is_granted('ROLE_ECOLE') or is_granted('ROLE_ADMIN')")]
 class IntervenantController extends AbstractController
 {
     #[Route('/', name: 'app_intervenant_index', methods: ['GET'])]

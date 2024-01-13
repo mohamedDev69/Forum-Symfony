@@ -38,7 +38,8 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        # - { path: ^/etudiant, roles: [ROLE_USER, ROLE_ADMIN] }
+        # - { path: ^/ecole, roles: [ROLE_ECOLE, ROLE_ADMIN] }
         # - { path: ^/connexion, roles: IS_AUTHENTICATED_FULLY }
         # - { path: ^/connexion, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 

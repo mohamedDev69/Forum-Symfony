@@ -10,8 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/salle')]
+#[Security("is_granted('ROLE_ECOLE') or is_granted('ROLE_ADMIN')")]
 class SalleController extends AbstractController
 {
     #[Route('/', name: 'app_salle_index', methods: ['GET'])]

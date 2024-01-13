@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/atelier')]
 
@@ -24,6 +25,7 @@ class AtelierController extends AbstractController
     }
 
     #[Route('/new', name: 'app_atelier_new', methods: ['GET', 'POST'])]
+    #[Security("is_granted('ROLE_ECOLE') or is_granted('ROLE_ADMIN')")]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $atelier = new Atelier();
@@ -52,6 +54,7 @@ class AtelierController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_atelier_edit', methods: ['GET', 'POST'])]
+    #[Security("is_granted('ROLE_ECOLE') or is_granted('ROLE_ADMIN')")]
     public function edit(Request $request, Atelier $atelier, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(AtelierType::class, $atelier);
@@ -71,6 +74,7 @@ class AtelierController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_atelier_delete', methods: ['POST'])]
+    #[Security("is_granted('ROLE_ECOLE') or is_granted('ROLE_ADMIN')")]
     public function delete(Request $request, Atelier $atelier, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$atelier->getId(), $request->request->get('_token'))) {
@@ -82,6 +86,7 @@ class AtelierController extends AbstractController
     }
 
     #[Route('/inscription/{id}', name: 'app_inscription', methods: ['POST'])]
+    #[Security("is_granted('ROLE_USER')")]
     public function inscription(AtelierRepository $atelierRepository, Atelier $atelier, EntityManagerInterface $entityManager): Response
     {
                
@@ -101,6 +106,7 @@ class AtelierController extends AbstractController
                return $this->redirectToRoute('app_atelier_index');
     }
     #[Route('/inscription', name: 'app_atelier_inscription', methods: ['GET'])]
+    #[Security("is_granted('ROLE_ADMIN')")]
     public function atelierInscription(AtelierRepository $atelierRepository): Response
     {
         return $this->render('atelier/list_atelier.html.twig', [

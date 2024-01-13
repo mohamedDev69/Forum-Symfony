@@ -10,8 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/secteur')]
+#[Security("is_granted('ROLE_ADMIN')")]
 class SecteurController extends AbstractController
 {
     #[Route('/', name: 'app_secteur_index', methods: ['GET'])]

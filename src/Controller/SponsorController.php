@@ -10,8 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/sponsor')]
+#[Security("is_granted('ROLE_ADMIN')")]
 class SponsorController extends AbstractController
 {
     #[Route('/', name: 'app_sponsor_index', methods: ['GET'])]

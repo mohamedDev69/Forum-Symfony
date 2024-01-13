@@ -10,3 +10,7 @@ app_home:
 kernel:
     resource: ../src/Kernel.php
     type: annotation
+
+app_login:
+    path: /connexion
+    controller: App\Controller\SecurityController::login
