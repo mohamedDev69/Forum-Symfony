@@ -3,10 +3,10 @@
     <ul>
 
 
-        {% if is_granted('ROLE_ADMIN')%}
+        {% if is_granted('ROLE_ADMIN')  or is_granted('ROLE_ECOLE') %}
             <li><a href="{{ path('app_atelier_index') }}">Ateliers</a></li>
         {% else %}
-            <li><a href="">Profil Utilisateur</a></li>
+            <li><a href="{{ path('app_profil_show') }}">Profil</a></li>
             <li><a href="{{ path('app_atelier_inscription') }}">Ateliers</a></li>
         {% endif %}
 

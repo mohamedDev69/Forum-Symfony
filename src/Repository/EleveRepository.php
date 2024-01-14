@@ -24,13 +24,11 @@ class EleveRepository extends ServiceEntityRepository
     /**
      * @return Eleve[] Returns an array of Eleve objects
      */
-    public function findByExampleField($value): array
+    public function findByUserId($value): array
     {
         return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
+            ->andWhere('e.user = :val')
             ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;

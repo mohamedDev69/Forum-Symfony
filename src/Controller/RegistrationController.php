@@ -8,6 +8,7 @@ use App\Entity\Utilisateur;
 use App\Form\RegistrationFormType;
 use App\Repository\AtelierRepository;
 use App\Repository\EleveRepository;
+use App\Repository\InscriptionRepository;
 use App\Security\UsersAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -79,14 +80,26 @@ class RegistrationController extends AbstractController
             ]);
     }
 
-    #[Route('/showProfilUser/{id}', name: 'app_profil_show', methods: ['GET'])]
-    public function showProfil(EleveRepository $eleveRepository): Response
+    #[Route('/showProfilUser', name: 'app_profil_show', methods: ['GET'])]
+    public function showProfil(InscriptionRepository $inscriptionRepository, EleveRepository $eleveRepository): Response
     {
+        $user = $this->getUser();
 
-        $eleveRepository
+        $eleve = $eleveRepository->findByUserId($user->getId());
 
-        return $this->render('atelier/show.html.twig', [
-            'profil' => $profil,
+        if ($eleve){
+            $inscription = $inscriptionRepository->findByEleveId($eleve[0]->getId());
+            $eleve = $eleve[0];
+        }
+        else {
+            $inscription = [];
+        }
+
+        return $this->render('profil/index.html.twig', [
+            'identifiant' => $eleve->getId(),
+            'eleve' => $eleve,
+            'email' => $user->getUserIdentifier(),
+            'inscriptions' => $inscription
         ]);
     }
 
