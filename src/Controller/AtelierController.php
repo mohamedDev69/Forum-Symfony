@@ -104,7 +104,7 @@ class AtelierController extends AbstractController
         
         $this->addFlash('success', 'Inscription réussie !');
 
-        return $this->redirectToRoute('app_atelier_index');
+        return $this->redirectToRoute('app_profil_show');
     }
     #[Route('/inscription', name: 'app_atelier_inscription', methods: ['GET'])]
     #[Security("is_granted('ROLE_ADMIN')")]
