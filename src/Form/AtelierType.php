@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Atelier;
+use App\Entity\Ecole;
 use App\Entity\Forum;
 use App\Entity\Intervenant;
 use App\Entity\Salle;
@@ -12,9 +13,20 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class AtelierType extends AbstractType
 {
+
+    private $security;
+
+    // Injectez le service de sécurité dans le constructeur
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -40,7 +52,26 @@ class AtelierType extends AbstractType
                 'class' => Secteur::class,
                 'choice_label' => 'name', // Assuming Secteur entity has a 'name' field
                 'label' => 'Secteur : '
-            ])
+            ]);
+            $user = $this->security->getUser();
+            if ($user && in_array('ROLE_ADMIN', $user->getRoles())) {
+                // Ajoutez le champ 'ecole' pour les admins avec une liste d'écoles
+                $builder->add('ecole', EntityType::class, [
+                    'class' => Ecole::class,
+                    'choice_label' => 'name', // Adaptez selon votre entité Ecole
+                ]);
+            } else {
+                // Pour les établissements, définissez l'école automatiquement
+                // Adaptez cette partie selon la manière dont vous récupérez l'école de l'utilisateur
+                $ecole = $user->getEcoles()->first();
+                $builder->add('ecole', EntityType::class, [
+                    'class' => Ecole::class,
+                    'choice_label' => 'name',
+                    'disabled' => true,
+                    'data' => $ecole,
+                ]);
+            };
+            $builder
             ->add('room', EntityType::class, [
                 'class' => Salle::class,
                 'choice_label' => 'name', // Assuming Salle entity has a 'name' field
