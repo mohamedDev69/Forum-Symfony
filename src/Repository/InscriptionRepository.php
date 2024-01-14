@@ -45,4 +45,18 @@ class InscriptionRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    /**
+     * @return Inscription[] Returns an array of Inscription objects
+     */
+    public function findByAtelier($value): array
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.atelier = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 }

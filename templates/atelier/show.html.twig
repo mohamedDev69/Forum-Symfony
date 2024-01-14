@@ -36,9 +36,33 @@
         </tbody>
     </table>
 
+    
+    {% if is_granted('ROLE_ADMIN') or (is_granted('ROLE_ECOLE') and atelier.ecole in user.ecoles)%}
+        <h3>Inscriptions</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Etudiant</th>
+                    <th>Date d'inscription</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for inscription in inscriptions %}
+                <tr>
+                    <td>{{ inscription.eleve.name }}</td>
+                    
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">Aucune inscriptions</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
     <a href="{{ path('app_atelier_index') }}">back to list</a>
 
-    {% if is_granted('ROLE_ADMIN')%}
+    {% if is_granted('ROLE_ADMIN') or (is_granted('ROLE_ECOLE') and atelier.ecole in user.ecoles)%}
         <a href="{{ path('app_atelier_edit', {'id': atelier.id}) }}">edit</a>
     {% endif %}
 

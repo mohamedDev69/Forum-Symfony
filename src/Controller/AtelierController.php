@@ -6,6 +6,7 @@ use App\Entity\Atelier;
 use App\Form\AtelierType;
 use App\Repository\AtelierRepository;
 use App\Repository\EleveRepository;
+use App\Repository\InscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,10 +58,19 @@ class AtelierController extends AbstractController
     }
 
     #[Route('/show/{id}', name: 'app_atelier_show', methods: ['GET'])]
-    public function show(Atelier $atelier): Response
+    public function show(Atelier $atelier, InscriptionRepository $inscriptionRespo): Response
     {
+        $user = $this->getUser();
+        $role = $user->getRoles();
+        $inscriptions = [];
+        if ($user && (in_array('ROLE_ECOLE', $role) or in_array('ROLE_ADMIN', $role))) {
+            $inscriptions = $inscriptionRespo->findByAtelier($atelier->getId());
+        }
+        // dd($inscriptions);
         return $this->render('atelier/show.html.twig', [
+            'inscriptions' => $inscriptions,
             'atelier' => $atelier,
+            'user' => $this->getUser(),
         ]);
     }
 
@@ -114,7 +124,7 @@ class AtelierController extends AbstractController
         
         $this->addFlash('success', 'Inscription réussie !');
 
-        return $this->redirectToRoute('app_atelier_index');
+        return $this->redirectToRoute('app_atelier_inscription');
     }
     #[Route('/inscription', name: 'app_atelier_inscription', methods: ['GET'])]
     #[Security("is_granted('ROLE_ADMIN')")]
