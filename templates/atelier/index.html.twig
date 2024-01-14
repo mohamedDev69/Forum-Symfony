@@ -14,6 +14,7 @@
                 <th>Description</th>
                 <th>Date_atelier</th>
                 <th>Heure</th>
+                <th>Ecole</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -26,9 +27,10 @@
                 <td>{{ atelier.description }}</td>
                 <td>{{ atelier.dateAtelier ? atelier.dateAtelier|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ atelier.heure ? atelier.heure : '' }}</td>
+                <td>{{ atelier.ecole ? atelier.ecole.name : '' }}</td>
                 <td>
                     <a href="{{ path('app_atelier_show', {'id': atelier.id}) }}">show</a>
-                    {% if is_granted('ROLE_ADMIN')%}
+                    {% if is_granted('ROLE_ADMIN') or (is_granted('ROLE_ECOLE') and atelier.ecole in user.ecoles)%}
                         <a href="{{ path('app_atelier_edit', {'id': atelier.id}) }}">edit</a>
                     {% endif %}
                 </td>
@@ -40,7 +42,7 @@
         {% endfor %}
         </tbody>
     </table>
-    {% if is_granted('ROLE_ADMIN')%}
+    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_ECOLE')%}
         <a href="{{ path('app_atelier_new') }}">Create new</a>
     {% endif %}
 {% endblock %}

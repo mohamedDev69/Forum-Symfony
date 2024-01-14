@@ -30,9 +30,13 @@ class Ecole
     #[ORM\ManyToOne(inversedBy: 'ecoles')]
     private ?Utilisateur $user = null;
 
+    #[ORM\OneToMany(mappedBy: 'ecole', targetEntity: Atelier::class)]
+    private Collection $ateliers;
+
     public function __construct()
     {
         $this->eleves = new ArrayCollection();
+        $this->ateliers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -114,6 +118,36 @@ class Ecole
     public function setUser(?Utilisateur $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Atelier>
+     */
+    public function getAteliers(): Collection
+    {
+        return $this->ateliers;
+    }
+
+    public function addAtelier(Atelier $atelier): static
+    {
+        if (!$this->ateliers->contains($atelier)) {
+            $this->ateliers->add($atelier);
+            $atelier->setEcole($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAtelier(Atelier $atelier): static
+    {
+        if ($this->ateliers->removeElement($atelier)) {
+            // set the owning side to null (unless already changed)
+            if ($atelier->getEcole() === $this) {
+                $atelier->setEcole(null);
+            }
+        }
 
         return $this;
     }

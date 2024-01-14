@@ -22,6 +22,7 @@ class AtelierController extends AbstractController
     {
         return $this->render('atelier/index.html.twig', [
             'ateliers' => $atelierRepository->findAll(),
+            'user' => $this->getUser(),
         ]);
     }
 
@@ -30,6 +31,15 @@ class AtelierController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $atelier = new Atelier();
+        $form = $this->createForm(AtelierType::class, $atelier);
+        $form->handleRequest($request);
+
+        $user = $this->getUser();
+        if ($user && in_array('ROLE_ECOLE', $user->getRoles())) {
+            $ecole = $user->getEcoles()->first();
+            $atelier->setEcole($ecole);
+        }
+
         $form = $this->createForm(AtelierType::class, $atelier);
         $form->handleRequest($request);
 
