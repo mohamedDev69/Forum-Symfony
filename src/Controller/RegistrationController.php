@@ -6,6 +6,8 @@ use App\Entity\Ecole;
 use App\Entity\Eleve;
 use App\Entity\Utilisateur;
 use App\Form\RegistrationFormType;
+use App\Repository\AtelierRepository;
+use App\Repository\EleveRepository;
 use App\Security\UsersAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -76,4 +78,16 @@ class RegistrationController extends AbstractController
                 'registrationForm' => $form->createView(),
             ]);
     }
+
+    #[Route('/showProfilUser/{id}', name: 'app_profil_show', methods: ['GET'])]
+    public function showProfil(EleveRepository $eleveRepository): Response
+    {
+
+        $eleveRepository
+
+        return $this->render('atelier/show.html.twig', [
+            'profil' => $profil,
+        ]);
+    }
+
 }
