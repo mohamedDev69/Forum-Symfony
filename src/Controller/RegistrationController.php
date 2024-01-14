@@ -14,11 +14,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UsersAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UsersAuthenticator $authenticator, EntityManagerInterface $entityManager,  MailerInterface $mailer): Response
     {
         $user = new Utilisateur();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -41,6 +43,7 @@ class RegistrationController extends AbstractController
             $userType = $formData['userType'];
             $name = $formData['name'];
             $mail = $formData['email'];
+            $mailContent = "<p>Vous venez de vous inscrire en tant qu'étudiant</p><p>Vous pouvez desormais vous inscire à l'atelier de votre choix</p>";
         
             if ($userType == "etudiant") {
                 $uniqueInfo = $formData['unique_info'];
@@ -56,6 +59,7 @@ class RegistrationController extends AbstractController
                 $entityManager->persist($etudiant);
                 $entityManager->flush();
             } else if($userType == "ecole"){
+                $mailContent = "<p>Vous venez de vous inscrire en tant qu'école</p><p>Vous pouvez desormais creer et gérer vos ateliers</p>";
                 $etablissement = new Ecole();
                 $etablissement->setName($name);
                 $etablissement->setAdress($adress);
@@ -63,6 +67,20 @@ class RegistrationController extends AbstractController
                 $etablissement->setMail($mail);
                 $entityManager->persist($etablissement);
                 $entityManager->flush();
+            }
+
+        
+            $email = (new Email())
+            ->from($mail)
+            ->to($user->getEmail())
+            ->subject('Bienvenue sur notre site')
+            ->text('Contenu de l\'e-mail')
+            ->html($mailContent);
+
+            try {
+                $mailer->send($email);
+            } catch (\Exception $e) {
+                throw new \Exception($e);
             }
         
             return $userAuthenticator->authenticateUser(
