@@ -66,7 +66,6 @@ class AtelierController extends AbstractController
         if ($user && (in_array('ROLE_ECOLE', $role) or in_array('ROLE_ADMIN', $role))) {
             $inscriptions = $inscriptionRespo->findByAtelier($atelier->getId());
         }
-        // dd($inscriptions);
         return $this->render('atelier/show.html.twig', [
             'inscriptions' => $inscriptions,
             'atelier' => $atelier,

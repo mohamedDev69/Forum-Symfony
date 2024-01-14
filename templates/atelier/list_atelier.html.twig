@@ -26,10 +26,8 @@
                 <td>{{ atelier.description }}</td>
                 <td>{{ atelier.dateAtelier ? atelier.dateAtelier|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <form method="post" action="{{ path('app_inscription', {'id': atelier.id}) }}">
-                        <button type="submit">S'inscrire</button>
-                    </form>
- 
+                    <a href="{{ path('app_atelier_show', {'id': atelier.id}) }}">show</a>
+                    <br>
                 </td>
             </tr>
         {% else %}

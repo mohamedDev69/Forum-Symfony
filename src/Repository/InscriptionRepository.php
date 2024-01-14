@@ -46,6 +46,22 @@ class InscriptionRepository extends ServiceEntityRepository
         ;
     }
 
+    public function getNombreInscritsParAtelierEtCreneau($atelierId, $creneauId): string
+    {
+        $qb = $this->createQueryBuilder('i');
+
+        $nbInscrit = $qb->select('COUNT(i.id)')
+            ->join('i.atelier', 'a')
+            ->where('a.id = :atelierId')
+            ->andWhere('a.heure = :creneauId')
+            ->setParameter('atelierId', $atelierId)
+            ->setParameter('creneauId', $creneauId)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $nbInscrit . " Inscrits";
+    }
+
     /**
      * @return Inscription[] Returns an array of Inscription objects
      */

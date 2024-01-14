@@ -33,6 +33,12 @@
                 <th>Heure</th>
                 <td>{{ atelier.heure ? atelier.heure : '' }}</td>
             </tr>
+            <tr>
+                <form method="post" action="{{ path('app_inscription', {'id': atelier.id}) }}">
+                    <button type="submit">S'inscrire</button>
+                </form>
+            </tr>
+
         </tbody>
     </table>
 
