@@ -5,6 +5,7 @@ use App\Entity\Inscription;
 use App\Entity\Atelier;
 use App\Form\AtelierType;
 use App\Repository\AtelierRepository;
+use App\Repository\EleveRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -87,23 +88,23 @@ class AtelierController extends AbstractController
 
     #[Route('/inscription/{id}', name: 'app_inscription', methods: ['POST'])]
     #[Security("is_granted('ROLE_USER')")]
-    public function inscription(AtelierRepository $atelierRepository, Atelier $atelier, EntityManagerInterface $entityManager): Response
+    public function inscription(AtelierRepository $atelierRepository, Atelier $atelier, EntityManagerInterface $entityManager, EleveRepository $eleveRepository): Response
     {
-               
-               $eleve = $this->getUser(); 
-               $inscription = new Inscription();
-               $inscription->setAtelier($atelier);
-               $inscription->setEleve($eleve);
-               $inscription->setDateInscription(new \DateTime());
-       
-              
-               $entityManager->persist($inscription);
-               $entityManager->flush();
-       
-               
-               $this->addFlash('success', 'Inscription réussie !');
-       
-               return $this->redirectToRoute('app_atelier_index');
+        $user = $this->getUser();
+        $eleve = $eleveRepository->findByUserId($user->getId())[0];
+        $inscription = new Inscription();
+        $inscription->setAtelier($atelier);
+        $inscription->setEleve($eleve);
+        $inscription->setDateInscription(new \DateTime());
+
+        
+        $entityManager->persist($inscription);
+        $entityManager->flush();
+
+        
+        $this->addFlash('success', 'Inscription réussie !');
+
+        return $this->redirectToRoute('app_atelier_index');
     }
     #[Route('/inscription', name: 'app_atelier_inscription', methods: ['GET'])]
     #[Security("is_granted('ROLE_ADMIN')")]
