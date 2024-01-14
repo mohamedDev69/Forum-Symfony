@@ -7,10 +7,12 @@
 
     <table class="table">
         <tbody>
+        {% if is_granted('ROLE_ADMIN')%}
             <tr>
                 <th>Id</th>
                 <td>{{ atelier.id }}</td>
             </tr>
+        {% endif %}
             <tr>
                 <th>Title</th>
                 <td>{{ atelier.title }}</td>
@@ -27,12 +29,18 @@
                 <th>Date_atelier</th>
                 <td>{{ atelier.dateAtelier ? atelier.dateAtelier|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
+            <tr>
+                <th>Heure</th>
+                <td>{{ atelier.heure ? atelier.heure : '' }}</td>
+            </tr>
         </tbody>
     </table>
 
     <a href="{{ path('app_atelier_index') }}">back to list</a>
 
-    <a href="{{ path('app_atelier_edit', {'id': atelier.id}) }}">edit</a>
+    {% if is_granted('ROLE_ADMIN')%}
+        <a href="{{ path('app_atelier_edit', {'id': atelier.id}) }}">edit</a>
+    {% endif %}
 
     {{ include('atelier/_delete_form.html.twig') }}
 {% endblock %}

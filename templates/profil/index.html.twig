@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Profil Utilisateur {% endblock %}
+
+{% block body %}
+<h1> Profil Utilisateur </h1>
+
+
+    <div style="display: flex;justify-content: center; margin-top: 30px">
+        Identifiant : {{ identifiant }}
+    </div>
+    <div style="display: flex;justify-content: center; margin-top: 10px">
+        Nom : {{ eleve.name }}
+    </div>
+
+    <div style="display: flex;justify-content: center; margin-top: 10px">
+        Email : {{ email }}
+    </div>
+
+    <h1 style="margin-top: 30px"> Liste des inscriptions </h1>
+
+    <table class="table" style="margin: auto">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Atelier</th>
+            <th>Date Inscription</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for inscription in inscriptions %}
+            <tr>
+                <td>{{ inscription.id }}</td>
+                <td>{{ inscription.atelier.title }}</td>
+                <td>{{ inscription.dateInscription ? inscription.dateInscription|date('Y-m-d H:i:s') : '' }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Aucun inscription trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
